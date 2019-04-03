@@ -1,0 +1,18 @@
+trigger PartnerLeadUpdate on Lead (before insert) {
+
+    
+    for(Lead newLead : Trigger.new){      
+        
+        if (newLead.Partner_place_holder__c != null) { 
+            Id resellerString; 
+          List <Account> reps = new List<Account>(); 
+           reps = [SELECT Name, Partner_ID__c, Id FROM Account WHERE Partner_ID__c =: newLead.Partner_place_holder__c]; 
+            for (Account rp : reps){
+               resellerString = rp.Id;            
+            }
+            Id resellerID = resellerString;            
+            newLead.Partners__c = resellerString;       
+        }      
+    }    
+
+}
